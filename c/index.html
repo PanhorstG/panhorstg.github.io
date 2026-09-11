@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Lumen Drift — Challenge</title>
+<meta name="robots" content="noindex" />
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(120% 90% at 50% 25%, #0a1a33, #05141c 75%); color: #eafcff;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; text-align: center; padding: 28px; }
+  .card { width: min(420px, 100%); }
+  .wordmark { font-size: 30px; font-weight: 800; letter-spacing: .02em; }
+  .wordmark .d { color: #5eead4; }
+  .sub { margin-top: 10px; color: #8fb8d4; font-size: 15px; line-height: 1.5; }
+  .who { margin-top: 22px; font-size: 17px; font-weight: 700; color: #c7a8ff; }
+  .who .n { color: #eafcff; } .who .m { color: #7ff2df; }
+  .btn { display: block; width: 100%; margin-top: 14px; padding: 15px 20px; border-radius: 999px;
+    font-size: 16px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; }
+  .btn.play { color: #04222a; background: linear-gradient(180deg, #7ff2df, #38d6f0);
+    box-shadow: 0 10px 30px rgba(56,214,240,.32); }
+  .btn.store { color: #eafcff; background: rgba(255,255,255,.06); border: 1px solid rgba(143,184,212,.35); }
+  .code { margin-top: 22px; font-size: 12px; color: #8fb8d4; letter-spacing: .04em; word-break: break-all; }
+  .code b { color: #c7a8ff; font-weight: 700; }
+  .hint { margin-top: 6px; font-size: 12px; color: #6f93ad; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="wordmark">LUMEN<span class="d">DRIFT</span></div>
+    <div class="sub">Someone dared you to beat their run — <b>same gates, same void.</b></div>
+    <div class="who" id="who"></div>
+    <a class="btn play" id="openBtn" href="#">Open in Lumen Drift</a>
+    <a class="btn store" id="storeBtn" href="https://play.google.com/store/apps/details?id=com.lumenguardian.lumendrift">Get it on Google Play</a>
+    <div class="code" id="code"></div>
+    <div class="hint">No app yet? Install, then paste the code in the ⚔ Challenge menu.</div>
+  </div>
+<script>
+  (function () {
+    var STORE = "https://play.google.com/store/apps/details?id=com.lumenguardian.lumendrift";
+    var q = new URLSearchParams(location.search);
+    // accept ?k=<code>, or a code sitting anywhere in the URL
+    var raw = q.get("k") || decodeURIComponent(location.href);
+    var m = raw.match(/LD1-[0-9a-z]+-[0-9a-z]+-[^\s&#]*/i);
+    var code = m ? m[0] : "";
+    var appUrl = code ? "lumendrift://c/" + code : "";
+    var nm = "", target = "";
+    if (code) {
+      var parts = code.split("-");
+      target = parts[2] ? (parseInt(parts[2], 36) || "") : "";
+      try { nm = parts[3] ? decodeURIComponent(parts.slice(3).join("-")) : ""; } catch (e) { nm = parts[3] || ""; }
+    }
+    var who = document.getElementById("who");
+    if (nm || target) {
+      who.innerHTML = '<span class="n">' + (nm || "A drifter") + '</span> drifted <span class="m">' +
+        (target ? Number(target).toLocaleString() : "?") + ' m</span>. Beat it.';
+    }
+    document.getElementById("code").innerHTML = code ? 'Challenge code: <b>' + code + '</b>' : "";
+    var openBtn = document.getElementById("openBtn");
+    document.getElementById("storeBtn").href = STORE;
+    if (appUrl) {
+      openBtn.href = appUrl;
+      // Try to hand off to the installed app immediately (in case the OS didn't
+      // intercept this link). If nothing happens, the buttons remain.
+      setTimeout(function () { try { location.href = appUrl; } catch (e) {} }, 250);
+    } else {
+      openBtn.href = STORE; openBtn.textContent = "Get Lumen Drift";
+    }
+  })();
+</script>
+</body>
+</html>
