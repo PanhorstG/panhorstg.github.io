@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lumenguardian.lumendrift",
+      "sha256_cert_fingerprints": [
+        "CD:22:5E:2C:B2:B4:11:4E:E1:71:8D:0F:AE:68:B0:9B:5B:85:CA:16:A7:E1:C3:33:1D:BE:02:71:8E:5E:4D:CA"
+      ]
+    }
+  }
+]
